@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendrier des matchs</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+<header>
+    <nav>
+        <ul>
+            <li><a href="index.html">Accueil</a></li>
+            <li><a href="actualites.html">Actualités</a></li>
+            <li><a href="calendrier.html">Calendrier</a></li>
+            <li><a href="paris.html">Paris Sportifs</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+<section class="calendrier">
+    <h2>Calendrier des matchs</h2>
+ <!-- Match 1 -->
+        <div class="match-item" onclick="afficherDetails(1)">
+            <div class="team">
+                <img src="real%20logo.png" alt="Real Madrid" class="team-logo">
+                <span class="team-name">CF Real Madrid</span>
+            </div>
+            <span class="match-score">2 - 1</span>
+            <div class="team">
+                <img src="atletico%20logo.png"alt="Atletico Madrid" class="team-logo">
+                <span class="team-name">Atletico Madrid</span>
+            </div>
+        </div>
+ 
+
+        <!-- Match 2 -->
+        <div class="match-item" onclick="afficherDetails(2)">
+            <div class="team">
+                <img src="leicester%20logo.png" alt="Leicester City" class="team-logo">
+                <span class="team-name">Leicester City FC</span>
+            </div>
+            <span class="match-score">1 - 3</span>
+            <div class="team">
+                <img src="logo%20man%20city.png" alt="Manchester City" class="team-logo">
+                <span class="team-name">Manchester City</span>
+            </div>
+        </div>
+    
+
+      <!-- Match 3 -->
+    <div class="match-item" onclick="afficherDetails(3)">
+        <div class="team">
+            <img src="logo%20psg.png" alt="Paris SG" class="team-logo">
+            <span class="team-name">Paris Saint Germain</span>
+        </div>
+        <span class="match-score">3 - 1</span>
+        <div class="team">
+            <img src="logo%20brest.png" alt="Stade Brestois" class="team-logo">
+            <span class="team-name">Stade Brestois 29</span>
+        </div>
+    </div>
+ <!-- Match 4 -->
+    <div class="match-item" onclick="afficherDetails(4)">
+        <div class="team">
+            <img src="bayer%20logo.png" alt="Paris SG" class="team-logo">
+            <span class="team-name">Bayer Leverkusen</span>
+        </div>
+        <span class="match-score">2 - 2</span>
+        <div class="team">
+                <span class="team-name">FC Bayern Munich</span>
+            <img src="logo%20bayern.png" alt="Stade Brestois" class="team-logo">
+       
+        </div>
+    </div>
+ <!-- Match 5-->
+        <div class="match-item" onclick="afficherDetails(5)">
+            <div class="team">
+                <img src="logo%20barca.png" alt="barcelone" class="team-logo">
+                <span class="team-name">FC Barcelone </span>
+            </div>
+            <span class="match-score">4 - 3</span>
+            <div class="team">
+                <img src="logo%20liverpool.png" alt="Liverpool" class="team-logo">
+                <span class="team-name">Liverpool FC</span>
+            </div>
+        </div>
+<!-- Match 6-->
+        <div class="match-item" onclick="afficherDetails(6)">
+            <div class="team">
+                <img src="logo%20lille%20.png" alt="Lille" class="team-logo">
+                <span class="team-name">LOSC Lille</span>
+            </div>
+            <span class="match-score">4 - 4</span>
+            <div class="team">
+                <img src="logo%20ac%20milan.png" alt="AC Millan" class="team-logo">
+                <span class="team-name">AC Milan</span>
+            </div>
+        </div>
+    
+</section>
+
+<!-- Détails du match 1 -->
+<div class="match-details match-details-1">
+    <span class="close" onclick="fermerDetails(1)">×</span>
+    <div class="match-content">
+        <div class="match-header">
+            <div class="team">
+                <img src="real%20logo.png" class="team-logo">
+                <h2 class="team-name">Real Madrid</h2>
+            </div>
+            <span class="score-display">2 - 1</span>
+            <div class="team">
+                <h2 class="team-name">Atletico Madrid</h2>
+                <img src="atletico%20logo.png" class="team-logo">
+            </div>
+        </div>
+        <div class="goal-scorers">
+            <div class="scorer-list">
+                <p>K.Mbappé (45’), Vinicius Jr (78’)</p>
+            </div>
+            <div class="scorer-list">
+                <p>A.Griezmann (60’)</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Détails du match 2 -->
+<div class="match-details match-details-2">
+    <span class="close" onclick="fermerDetails(2)">×</span>
+    <div class="match-content">
+        <div class="match-header">
+            <div class="team">
+                <img src="leicester%20logo.png" class="team-logo">
+                <h2 class="team-name">Leicester City</h2>
+            </div>
+            <span class="score-display">1 - 3</span>
+            <div class="team">
+                <h2 class="team-name">Manchester City</h2>
+                <img src="logo%20man%20city.png" class="team-logo">
+            </div>
+        </div>
+        <div class="goal-scorers">
+            <div class="scorer-list">
+                <p>J.Vardy (90+5')</p>
+            </div>
+            <div class="scorer-list">
+                <p>E.Haaland (20’, 55’), K.De Bruyne (70’)</p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Détails du match 3 -->
+<div class="match-details match-details-3">
+    <span class="close" onclick="fermerDetails(3)">×</span>
+    <div class="match-content">
+        <div class="match-header">
+            <div class="team">
+                <img src="logo%20psg.png" class="team-logo">
+                <h2 class="team-name">Paris Saint Germain</h2>
+            </div>
+            <span class="score-display">3-1</span>
+            <div class="team">
+                <h2 class="team-name">Stade Brestois</h2>
+                <img src="logo%20brest.png" class="team-logo">
+            </div>
+        </div>
+        <div class="goal-scorers">
+            <div class="scorer-list">
+                <p>O.Dembélé (12',15',72')</p>
+            </div>
+            <div class="scorer-list">
+                <p>L.Ajorque (19')</p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Détails du match 4 -->
+<div class="match-details match-details-4">
+    <span class="close" onclick="fermerDetails(4)">×</span>
+    <div class="match-content">
+        <div class="match-header">
+            <div class="team">
+                <img src="bayer%20logo.png" class="team-logo">
+                <h2 class="team-name">Bayer Leverkusen</h2>
+            </div>
+            <span class="score-display">2-2</span>
+            <div class="team">
+                <h2 class="team-name">Bayern Munich</h2>
+                <img src="logo%20bayern.png" class="team-logo">
+            </div>
+        </div>
+        <div class="goal-scorers">
+            <div class="scorer-list">
+                <p>K.Coman (28'), H.Kane (67')  </p>
+            </div>
+            <div class="scorer-list">
+                <p>F.Wirtz (34', 78')</p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Détails du match 5 -->
+<div class="match-details match-details-5">
+    <span class="close" onclick="fermerDetails(5)">×</span>
+    <div class="match-content">
+        <div class="match-header">
+            <div class="team">
+                <img src="logo%20barca.png" class="team-logo">
+                <h2 class="team-name">FC Barcelone</h2>
+            </div>
+            <span class="score-display">4-3</span>
+            <div class="team">
+                <h2 class="team-name">Liverpool FC<h2>
+                <img src="logo%20liverpool.png" class="team-logo">
+            </div>
+        <div>    
+<div class="goal-scorers">
+            <div class="scorer-list">
+                <p>R.Lewandowski (25', 34'), L.Yamal (63'), Pedri (90+3') </p>
+            </div>
+            <div class="scorer-list">
+                <p>M.Salah (11', 14'), V. Van Djik (81')</p>
+            </div>
+        </div>
+    </div>
+
+        <!-- Détails du match 6 -->
+<div class="match-details match-details-6">
+    <span class="close" onclick="fermerDetails(6)">×</span>
+    <div class="match-content">
+        <div class="match-header">
+            <div class="team">
+                <img src="logo%20lille%20.png" class="team-logo">
+                <h2 class="team-name">LOSC Lille</h2>
+            </div>
+            <span class="score-display">4-4</span>
+            <div class="team">
+                <h2 class="team-name">AC Milan<h2>
+                <img src="logo%20ac%20milan.png" class="team-logo">
+          <div>
+        <div class="goal-scorers">
+            <div class="scorer-list">
+                <p>J.David (39', 45+2'), R. Cabella (79'), B.André (90+6') </p>
+            </div>
+            <div class="scorer-list">
+                <p> J.Félix (3',18 '), T.Abraham (7), C.Pulisic (35') </p>
+            </div>
+        </div>
+    </div>
+<footer>
+    <p>&copy; 2025 SportSite. Tous droits réservés.</p>
+</footer>
+ <body>
+   <html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SportSite - Votre Site Sportif Futuriste</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="actualites.html">Actualités</a></li>
+                <li><a href="calendrier.html">Calendrier</a></li>
+                <li><a href="paris.html">Paris Sportifs</a></li>
+               
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>Bienvenue sur SportSite</h1>
+        <p class="slogan">Le site sportif du futur avec des paris, des jeux, et plus encore !</p>
+        <img src="match.jpg" alt="Football Futuriste" class="hero-image">
+    </section>
+
+    <section class="description">
+        <h2>Pourquoi SportSite ?</h2>
+        <p>Le site sportif le plus avancé avec des actualités en temps réel, des paris interactifs, et des jeux futuristes !</p>
+        <div class="features">
+            <div class="feature">
+                <img src="journal%20sportif.jpg" alt="Actualités" class="feature-image">
+                <p class="feature-text">Actualités sportives en temps réel</p>
+            </div>
+            <div class="feature">
+                <img src="paris.jpg" alt="Paris sportifs" class="feature-image">
+                <p class="feature-text">Pariez sur vos matchs préférés</p>
+            </div>
+            <div class="feature">
+                <img src="calendrier%20futuriste.webp" alt="Jeux futuristes" class="feature-image">
+                <p class="feature-text">Calendrier des rencontres</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="events">
+        <h2>Événements à Venir</h2>
+     <div class="event-card">
+    <img src="Paris%20vs%20Brest.webp" alt="Match de football" class="event-image">
+    <div class="event-info">
+        <h3>1/16ème de Finale Ligue des Champions - 2025</h3>
+        <p>Le Paris Saint Germain dit grand favoris pour cette double-confrontation face à Brest dans ces barrages!</p>
+        <button class="cta-button" onclick="window.location.href='calendrier.html'">Voir les paris</button>
+    </div>
+</div>
+
+<!-- Event card 2 -->
+<div class="event-card">
+<img src="Bayern%20vs%20Bayer.webp" alt="Match de basketball" class="event-image">
+    <div class="event-info">
+        <h3>Football - Championnat National</h3>
+        <p>Le Bayern reçoit Leverkusen dans un match décisif pour le titre!</p>
+        <button class="cta-button" onclick="window.location.href='calendrier.html'">Voir les paris</button>
+    </div>
+</div>
+        
+    </section>
+
+    <section class="newsletter">
+        <h2>Restez Informé</h2>
+        <p>Inscrivez-vous à notre newsletter pour ne rien manquer des dernières actualités et événements.</p>
+        <form>
+            <input type="email" placeholder="Votre email" required>
+            <button type="submit" class="cta-button">S'abonner</button>
+        </form>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 SportSite. Tous droits réservés.</p>
+    </footer>
+</body>
+</html>
