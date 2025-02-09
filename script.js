@@ -4,32 +4,26 @@ function afficherDetailsMatch(equipe1, logo1, equipe2, logo2, score1, score2, bu
     document.getElementById("team2-name").textContent = equipe2;
     document.getElementById("team2-logo").src = logo2;
     document.getElementById("score-display").textContent = score1 + " - " + score2;
-
     document.getElementById("buteurs-equipe1").textContent = buteurs1 ? buteurs1 : "Aucun buteur";
     document.getElementById("buteurs-equipe2").textContent = buteurs2 ? buteurs2 : "Aucun buteur";
-
     document.getElementById("match-details").classList.add("active");
 }
 
-/// Afficher les détails du match
 function afficherDetails(matchNumber) {
     document.querySelector(`.match-details-${matchNumber}`).classList.add("active");
 }
 
-// Fermer les détails du match
 function fermerDetails(matchNumber) {
     document.querySelector(`.match-details-${matchNumber}`).classList.remove("active");
 }
 
-let coins = 500; // Nombre de coins du joueur
-let parisEffectues = []; // Liste pour stocker les paris effectués
+let coins = 500;
+let parisEffectues = [];
 
-// Fonction pour simuler un match de 20 secondes
 function simulerMatch() {
     let status = document.getElementById("status");
     let simulationBloc = document.getElementById("simulation-bloc");
     let scoreElement = document.getElementById("score");
-    let resultatDiv = document.getElementById("resultat");
     let tempsElement = document.getElementById("temps");
     
     simulationBloc.style.display = "block";
