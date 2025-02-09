@@ -28,160 +28,120 @@ let parisEffectues = []; // Liste pour stocker les paris effectués
 function simulerMatch() {
     let status = document.getElementById("status");
     let simulationBloc = document.getElementById("simulation-bloc");
-    let matchInfo = document.getElementById("match-info");
     let scoreElement = document.getElementById("score");
     let resultatDiv = document.getElementById("resultat");
     let tempsElement = document.getElementById("temps");
-    let relancerBtn = document.getElementById("relancer-btn");
-
-    // Affiche le bloc de simulation
+    
     simulationBloc.style.display = "block";
     status.textContent = "Simulation en cours...";
 
-    // Initialisation des scores et du temps
-    let scorePSG = 0;
-    let scoreOM = 0;
-    let scoreRMA = 0;
-    let scoreBarca = 0;
+    let scores = {
+        "PSG vs OM": [0, 0],
+        "Real Madrid vs Barça": [0, 0],
+        "Chelsea vs Man City": [0, 0],
+        "Bayern vs Dortmund": [0, 0]
+    };
+
+    let maxButsParEquipe = 3;
     let temps = 0;
 
-    // Limite réaliste des buts
-    let maxButsParEquipe = 3;
-
-    // Délai entre chaque mise à jour (20 secondes pour 90 minutes)
     let interval = setInterval(() => {
         temps++;
-        tempsElement.textContent = `Temps: ${temps} sec`;  // Affiche le temps en secondes
+        tempsElement.textContent = `Temps: ${temps} sec`;
 
-        // Probabilités de marquer pour chaque équipe à chaque seconde
-        if (Math.random() < 0.1 && scorePSG < maxButsParEquipe) {  // 10% de chance de marquer
-            scorePSG++;
-        }
-        if (Math.random() < 0.1 && scoreOM < maxButsParEquipe) {
-            scoreOM++;
-        }
-        if (Math.random() < 0.1 && scoreRMA < maxButsParEquipe) {
-            scoreRMA++;
-        }
-        if (Math.random() < 0.1 && scoreBarca < maxButsParEquipe) {
-            scoreBarca++;
-        }
+        Object.keys(scores).forEach(match => {
+            if (Math.random() < 0.1 && scores[match][0] < maxButsParEquipe) {
+                scores[match][0]++;
+            }
+            if (Math.random() < 0.1 && scores[match][1] < maxButsParEquipe) {
+                scores[match][1]++;
+            }
+        });
 
-        // Mise à jour du score à chaque seconde
-        scoreElement.textContent = `Score: PSG ${scorePSG} - ${scoreOM} OM | Real Madrid ${scoreRMA} - ${scoreBarca} Barça`;
+        scoreElement.innerHTML = `
+            PSG ${scores["PSG vs OM"][0]} - ${scores["PSG vs OM"][1]} OM | 
+            RMA ${scores["Real Madrid vs Barça"][0]} - ${scores["Real Madrid vs Barça"][1]} Barça | 
+            Chelsea ${scores["Chelsea vs Man City"][0]} - ${scores["Chelsea vs Man City"][1]} Man City | 
+            Bayern ${scores["Bayern vs Dortmund"][0]} - ${scores["Bayern vs Dortmund"][1]} Dortmund
+        `;
 
-        // Si 20 secondes sont écoulées, on arrête la simulation
         if (temps >= 20) {
             clearInterval(interval);
-            terminerSimulation(scorePSG, scoreOM, scoreRMA, scoreBarca);
+            terminerSimulation(scores);
         }
-    }, 1000); // Mise à jour toutes les secondes
+    }, 1000);
 }
 
-// Affiche les résultats du match
-function terminerSimulation(scorePSG, scoreOM, scoreRMA, scoreBarca) {
+function terminerSimulation(scores) {
     let resultatDiv = document.getElementById("resultat");
     let status = document.getElementById("status");
+    resultatDiv.innerHTML = "";
 
-    // Affiche les scores finaux
-    resultatDiv.innerHTML = `
-        <p>PSG ${scorePSG} - ${scoreOM} OM</p>
-        <p>Real Madrid ${scoreRMA} - ${scoreBarca} Barça</p>
-    `;
+    Object.keys(scores).forEach(match => {
+        let [score1, score2] = scores[match];
+        resultatDiv.innerHTML += `<p>${match}: ${score1} - ${score2}</p>`;
+    });
 
-    // Vérification des paris effectués et calcul des gains/pertes
     parisEffectues.forEach(pari => {
         let gain = 0;
-        let resultatMatch = "";
+        let resultatMatch = "perdu";
+        let [score1, score2] = scores[pari.match];
 
-        if (pari.match === "PSG vs OM") {
-            if ((scorePSG > scoreOM && pari.equipe === "PSG") ||
-                (scorePSG === scoreOM && pari.equipe === "Match Nul") ||
-                (scoreOM > scorePSG && pari.equipe === "OM")) {
-                gain = pari.mise * pari.cote;
-                resultatMatch = "gagné";
-            } else {
-                resultatMatch = "perdu";
-            }
+        if ((score1 > score2 && pari.equipe.includes(pari.match.split(" vs ")[0])) ||
+            (score1 === score2 && pari.equipe === "Match Nul") ||
+            (score2 > score1 && pari.equipe.includes(pari.match.split(" vs ")[1]))) {
+            gain = pari.mise * pari.cote;
+            resultatMatch = "gagné";
+            coins += gain;
         }
 
-        if (pari.match === "Real Madrid vs Barça") {
-            if ((scoreRMA > scoreBarca && pari.equipe === "Real Madrid") ||
-                (scoreRMA === scoreBarca && pari.equipe === "Match Nul") ||
-                (scoreBarca > scoreRMA && pari.equipe === "Barça")) {
-                gain = pari.mise * pari.cote;
-                resultatMatch = "gagné";
-            } else {
-                resultatMatch = "perdu";
-            }
-        }
-
-        // Affichage des résultats des paris
         let listeParis = document.getElementById("liste-paris");
         let pariResultat = document.createElement("li");
         pariResultat.textContent = `Pari sur ${pari.equipe} - Mise: ${pari.mise} coins - Résultat: ${resultatMatch} - Gain: ${gain.toFixed(2)} coins`;
         listeParis.appendChild(pariResultat);
-
-        // Ajout des gains ou pertes
-        if (resultatMatch === "gagné") {
-            coins += gain;
-        } else {
-            coins -= pari.mise;
-        }
     });
 
-    status.textContent = "Simulation terminée !";
-
-    // Affichage du bouton de relance
-    let relancerBtn = document.getElementById("relancer-btn");
-    relancerBtn.style.display = "block";  // Afficher le bouton pour relancer la simulation
+    status.textContent = "Simulation terminée ! Cliquez pour réinitialiser.";
+    status.onclick = resetSimulation;
 }
 
-// Fonction pour relancer la simulation
-function relancerSimulation() {
-    // Réinitialiser l'affichage
-    document.getElementById("resultat").innerHTML = "";
-    document.getElementById("status").textContent = "Cliquez sur un pari pour lancer la simulation";
-    document.getElementById("simulation-bloc").style.display = "none";  // Cacher le bloc de simulation
-    document.getElementById("temps").textContent = "Temps: 0 sec";  // Réinitialiser le temps
-    document.getElementById("score").textContent = "Score: 0 - 0 | 0 - 0";  // Réinitialiser le score
-    document.getElementById("relancer-btn").style.display = "none";  // Cacher le bouton de relance
-
-    // Relancer la simulation
-    simulerMatch();
-}
-
-// Fonction pour placer un pari
 function placerPari(equipe, cote) {
     let mise = prompt(`Tu as ${coins} coins. Combien veux-tu miser sur ${equipe} ?`);
     mise = parseInt(mise);
 
-    if (isNaN(mise) || mise <= 0) {
-        alert("Montant invalide !");
-        return;
-    }
-
-    if (mise > coins) {
-        alert("Tu n'as pas assez de coins !");
+    if (isNaN(mise) || mise <= 0 || mise > coins) {
+        alert("Montant invalide ou insuffisant !");
         return;
     }
 
     coins -= mise;
     let gainPotentiel = (mise * cote).toFixed(2);
+    
+    let match = "";
+    if (equipe.includes("PSG") || equipe.includes("OM")) match = "PSG vs OM";
+    else if (equipe.includes("Real Madrid") || equipe.includes("Barça")) match = "Real Madrid vs Barça";
+    else if (equipe.includes("Chelsea") || equipe.includes("Man City")) match = "Chelsea vs Man City";
+    else if (equipe.includes("Bayern") || equipe.includes("Dortmund")) match = "Bayern vs Dortmund";
 
-    // Ajout du pari à la liste des paris effectués
-    parisEffectues.push({
-        match: equipe.includes("PSG") ? "PSG vs OM" : "Real Madrid vs Barça", 
-        equipe: equipe, 
-        mise: mise, 
-        cote: cote
-    });
+    parisEffectues.push({ match, equipe, mise, cote });
 
     let listeParis = document.getElementById("liste-paris");
     let pari = document.createElement("li");
     pari.textContent = `Pari sur ${equipe} - Mise: ${mise} coins - Gain potentiel: ${gainPotentiel} coins`;
-
     listeParis.appendChild(pari);
 
     alert(`Pari placé sur ${equipe} !\nMise: ${mise} coins\nGain potentiel: ${gainPotentiel} coins`);
+}
+
+function resetSimulation() {
+    let status = document.getElementById("status");
+    let simulationBloc = document.getElementById("simulation-bloc");
+    let resultatDiv = document.getElementById("resultat");
+    let scoreElement = document.getElementById("score");
+    
+    simulationBloc.style.display = "none";
+    resultatDiv.innerHTML = "";
+    scoreElement.innerHTML = "";
+    status.textContent = "Cliquez sur un pari pour lancer la simulation";
+    status.onclick = null;
 }
