@@ -17,17 +17,33 @@ function fermerDetails(matchNumber) {
     document.querySelector(`.match-details-${matchNumber}`).classList.remove("active");
 }
 
-let coins = 500;
+let coins = localStorage.getItem("coins") ? parseInt(localStorage.getItem("coins")) : 500;
+let lastLogin = localStorage.getItem("lastLogin") ? new Date(localStorage.getItem("lastLogin")) : new Date(0);
+let today = new Date();
 let parisEffectues = [];
+let simulationEnCours = false;
+let simulationTerminee = false;
 
+if (today.toDateString() !== lastLogin.toDateString()) {
+    coins += 500;
+    localStorage.setItem("lastLogin", today);
+    localStorage.setItem("coins", coins);
+}
+
+// Fonction pour simuler un match de 20 secondes
 function simulerMatch() {
+    if (simulationEnCours || (!simulationTerminee && parisEffectues.length === 0)) return;
+    simulationEnCours = true;
+    simulationTerminee = false;
     let status = document.getElementById("status");
     let simulationBloc = document.getElementById("simulation-bloc");
     let scoreElement = document.getElementById("score");
+    let resultatDiv = document.getElementById("resultat");
     let tempsElement = document.getElementById("temps");
-    
+
     simulationBloc.style.display = "block";
     status.textContent = "Simulation en cours...";
+    resultatDiv.innerHTML = "";
 
     let scores = {
         "PSG vs OM": [0, 0],
@@ -36,7 +52,7 @@ function simulerMatch() {
         "Bayern vs Dortmund": [0, 0]
     };
 
-    let maxButsParEquipe = 3;
+    let maxButsParEquipe = 5;
     let temps = 0;
 
     let interval = setInterval(() => {
@@ -69,8 +85,9 @@ function simulerMatch() {
 function terminerSimulation(scores) {
     let resultatDiv = document.getElementById("resultat");
     let status = document.getElementById("status");
+    let listeParis = document.getElementById("liste-paris");
+    
     resultatDiv.innerHTML = "";
-
     Object.keys(scores).forEach(match => {
         let [score1, score2] = scores[match];
         resultatDiv.innerHTML += `<p>${match}: ${score1} - ${score2}</p>`;
@@ -86,17 +103,30 @@ function terminerSimulation(scores) {
             (score2 > score1 && pari.equipe.includes(pari.match.split(" vs ")[1]))) {
             gain = pari.mise * pari.cote;
             resultatMatch = "gagné";
-            coins += gain;
         }
 
-        let listeParis = document.getElementById("liste-paris");
         let pariResultat = document.createElement("li");
         pariResultat.textContent = `Pari sur ${pari.equipe} - Mise: ${pari.mise} coins - Résultat: ${resultatMatch} - Gain: ${gain.toFixed(2)} coins`;
         listeParis.appendChild(pariResultat);
+
+        if (resultatMatch === "gagné") {
+            coins += gain;
+        }
     });
 
-    status.textContent = "Simulation terminée ! Cliquez pour réinitialiser.";
-    status.onclick = resetSimulation;
+    localStorage.setItem("coins", coins);
+    status.innerHTML = '<button onclick="resetSimulation()">Réinitialiser</button>';
+    simulationEnCours = false;
+    simulationTerminee = true;
+}
+
+function resetSimulation() {
+    document.getElementById("simulation-bloc").style.display = "none";
+    document.getElementById("score").innerHTML = "Score: 0 - 0";
+    document.getElementById("temps").textContent = "Temps: 0s";
+    parisEffectues = [];
+    simulationTerminee = false;
+    document.getElementById("status").textContent = 'Cliquez sur un pari pour lancer la simulation';
 }
 
 function placerPari(equipe, cote) {
@@ -109,6 +139,7 @@ function placerPari(equipe, cote) {
     }
 
     coins -= mise;
+    localStorage.setItem("coins", coins);
     let gainPotentiel = (mise * cote).toFixed(2);
     
     let match = "";
@@ -125,17 +156,4 @@ function placerPari(equipe, cote) {
     listeParis.appendChild(pari);
 
     alert(`Pari placé sur ${equipe} !\nMise: ${mise} coins\nGain potentiel: ${gainPotentiel} coins`);
-}
-
-function resetSimulation() {
-    let status = document.getElementById("status");
-    let simulationBloc = document.getElementById("simulation-bloc");
-    let resultatDiv = document.getElementById("resultat");
-    let scoreElement = document.getElementById("score");
-    
-    simulationBloc.style.display = "none";
-    resultatDiv.innerHTML = "";
-    scoreElement.innerHTML = "";
-    status.textContent = "Cliquez sur un pari pour lancer la simulation";
-    status.onclick = null;
 }
