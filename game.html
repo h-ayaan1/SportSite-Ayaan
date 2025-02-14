@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diamond Rush</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav>
+        <ul>
+            <li><a href="index.html">Accueil</a></li>
+            <li><a href="actualites.html">Actualités</a></li>
+            <li><a href="calendrier.html">Calendrier</a></li>
+            <li><a href="paris.html">Paris Sportifs</a></li>
+            <li><a href="game.html" class="active">Jeu</a></li>
+        </ul>
+    </nav>  
+    </header>
+    <h2>Diamond Rush</h2>
+        <p>Coins: <span id="coin-count">1000</span></p>
+    <div class="controls">
+        <label for="bet-amount">Mise :</label>
+        <input type="number" id="bet-amount" min="10" max="1000" value="10">
+        
+        <label for="bomb-count">Bombes :</label>
+        <input type="number" id="bomb-count" min="1" max="10" value="3">
+        
+        <button onclick="startGame()">Jouer</button>
+        <button id="cashout-btn" onclick="cashout()" disabled>Cashout</button>
+    </div>
+
+    <div class="grid" id="game-grid"></div>
+
+    <p id="message"></p>
+
+    <script src="game.js"></script>
+</body>
+</html>
