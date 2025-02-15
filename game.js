@@ -1,7 +1,30 @@
-let coins = 1000;
+let coins = parseInt(localStorage.getItem("coins")) || 1000;
+let lastBonusDate = localStorage.getItem("lastBonusDate");
 let currentWinnings = 0;
+let baseBet = 0;
 let gameActive = false;
 const gridSize = 5;
+
+document.addEventListener("DOMContentLoaded", () => {
+    checkDailyBonus();
+    updateCoinDisplay();
+});
+
+function updateCoinDisplay() {
+    document.getElementById("coin-count").innerText = coins;
+    localStorage.setItem("coins", coins);
+}
+
+function checkDailyBonus() {
+    let today = new Date().toISOString().split("T")[0];
+    if (lastBonusDate !== today) {
+        coins += 20;
+        lastBonusDate = today;
+        localStorage.setItem("lastBonusDate", today);
+        updateCoinDisplay();
+        document.getElementById("message").innerText = "🎁 Bonus quotidien : +20 coins !";
+    }
+}
 
 function startGame() {
     let betAmount = parseInt(document.getElementById("bet-amount").value);
@@ -13,14 +36,15 @@ function startGame() {
     }
 
     coins -= betAmount;
-    document.getElementById("coin-count").innerText = coins;
+    baseBet = betAmount;
+    updateCoinDisplay();
     document.getElementById("cashout-btn").disabled = false;
-    currentWinnings = 0;
+    currentWinnings = betAmount;
     gameActive = true;
 
     let grid = document.getElementById("game-grid");
     grid.innerHTML = "";
-    
+
     let cells = Array(gridSize * gridSize).fill("diamond");
     let bombPositions = new Set();
 
@@ -36,14 +60,18 @@ function startGame() {
         cell.classList.add("cell");
         cell.dataset.type = type;
         cell.dataset.index = index;
-        cell.addEventListener("click", () => revealCell(cell, betAmount, bombCount));
+        cell.addEventListener("click", () => revealCell(cell, bombCount));
         grid.appendChild(cell);
     });
 
-    document.getElementById("message").innerText = "Clique sur les cases pour gagner !";
+    document.getElementById("message").innerText = "💎 Clique sur les cases pour trouver des diamants !";
 }
 
-function revealCell(cell, betAmount, bombCount) {
+function getMultiplier(bombCount, revealedDiamonds) {
+    return 1 + (bombCount * 0.04) + (revealedDiamonds * 0.15);
+}
+
+function revealCell(cell, bombCount) {
     if (!gameActive) return;
 
     if (cell.dataset.type === "bomb") {
@@ -53,23 +81,23 @@ function revealCell(cell, betAmount, bombCount) {
         currentWinnings = 0;
         document.getElementById("cashout-btn").disabled = true;
         gameActive = false;
-        setTimeout(startGame, 3000); // Réinitialisation après 3 secondes
+        setTimeout(startGame, 3000);
     } else {
         cell.innerHTML = "💎";
         cell.classList.add("diamond", "revealed");
-        let multiplier = 1 + (bombCount * 0.2);
-        let winnings = Math.floor(betAmount * multiplier);
-        currentWinnings += winnings;
-        document.getElementById("message").innerText = `💰 Tu as ${currentWinnings} coins en attente !`;
+        let revealedDiamonds = document.querySelectorAll(".diamond.revealed").length;
+        let multiplier = getMultiplier(bombCount, revealedDiamonds);
+        currentWinnings = Math.floor(baseBet * multiplier);
+        document.getElementById("message").innerText = `💰 Gains potentiels : ${currentWinnings} coins`;
     }
 }
 
 function cashout() {
     if (!gameActive) return;
     coins += currentWinnings;
-    document.getElementById("coin-count").innerText = coins;
+    updateCoinDisplay();
     document.getElementById("message").innerText = `✅ Tu as encaissé ${currentWinnings} coins !`;
     document.getElementById("cashout-btn").disabled = true;
     gameActive = false;
-    setTimeout(startGame, 3000); // Réinitialisation après 3 secondes
+    setTimeout(startGame, 3000);
 }
